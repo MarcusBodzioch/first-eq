@@ -5,9 +5,12 @@
 
   ==============================================================================
 */
-
+#include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+
+
+
 
 //==============================================================================
 FirstEQAudioProcessor::FirstEQAudioProcessor()
@@ -166,7 +169,8 @@ bool FirstEQAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* FirstEQAudioProcessor::createEditor()
 {
-    return new FirstEQAudioProcessorEditor (*this);
+    //return new FirstEQAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -181,6 +185,17 @@ void FirstEQAudioProcessor::setStateInformation (const void* data, int sizeInByt
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout
+FirstEQAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("LowCut Freq", "LowCut Freq",
+        juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 1.f), 20.f));
+
+    return layout;
 }
 
 //==============================================================================
